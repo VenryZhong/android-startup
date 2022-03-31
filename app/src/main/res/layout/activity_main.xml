@@ -46,6 +46,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/clear" />
 
+        <Button
+            android:id="@+id/moreAnnotate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:text="@string/more_annotate"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/more" />
+
         <ImageView
             android:id="@+id/diagram"
             android:layout_width="match_parent"
@@ -53,7 +65,7 @@
             android:background="@drawable/android_startup_diagram"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/more" />
+            app:layout_constraintTop_toBottomOf="@+id/moreAnnotate" />
 
         <TextView
             android:id="@+id/content"

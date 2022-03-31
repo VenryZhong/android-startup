@@ -35,4 +35,6 @@ dependencies {
     testImplementation Dependencies.junit
     androidTestImplementation Dependencies.ext_junit
     androidTestImplementation Dependencies.espresso_core
+
+    implementation project(':lib-base')
 }

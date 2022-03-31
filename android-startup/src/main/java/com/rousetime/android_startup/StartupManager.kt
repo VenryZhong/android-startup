@@ -26,6 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger
 class StartupManager private constructor(
     private val context: Context,
     private val startupList: List<AndroidStartup<*>>,
+    private val startupSortStore: StartupSortStore?,
     private val needAwaitCount: AtomicInteger,
     private val config: StartupConfig
 ) {
@@ -52,7 +53,7 @@ class StartupManager private constructor(
         }
         mAwaitCountDownLatch = CountDownLatch(needAwaitCount.get())
 
-        if (startupList.isNullOrEmpty()) {
+        if (startupList.isNullOrEmpty() && startupSortStore?.result.isNullOrEmpty()) {
             StartupLogUtils.e { "startupList is empty in the current process." }
             return@apply
         }
@@ -60,9 +61,16 @@ class StartupManager private constructor(
         TraceCompat.beginSection(StartupManager::class.java.simpleName)
         StartupCostTimesUtils.startTime = System.nanoTime()
 
-        TopologySort.sort(startupList).run {
+        fun runStore(store: StartupSortStore) {
             mDefaultManagerDispatcher.prepare()
-            execute(this)
+            execute(store)
+        }
+        if (startupSortStore != null) {
+            runStore(startupSortStore)
+        } else {
+            TopologySort.sort(startupList).run {
+                runStore(this)
+            }
         }
 
         if (needAwaitCount.get() <= 0) {
@@ -79,7 +87,13 @@ class StartupManager private constructor(
      * Startup dispatcher
      */
     private val mDefaultManagerDispatcher by lazy {
-        StartupManagerDispatcher(context, needAwaitCount, mAwaitCountDownLatch, startupList.size, config.listener)
+        StartupManagerDispatcher(
+            context,
+            needAwaitCount,
+            mAwaitCountDownLatch,
+            startupSortStore?.result?.size ?: startupList.size,
+            config.listener
+        )
     }
 
     /**
@@ -106,6 +120,7 @@ class StartupManager private constructor(
 
     class Builder {
         private var mStartupList = mutableListOf<AndroidStartup<*>>()
+        private var mStartupSortStore: StartupSortStore? = null
         private var mNeedAwaitCount = AtomicInteger()
         private var mLoggerLevel = LoggerLevel.NONE
         private var mAwaitTimeout = AWAIT_TIMEOUT
@@ -119,6 +134,11 @@ class StartupManager private constructor(
             list.forEach {
                 addStartup(it)
             }
+        }
+
+        fun setStartupSortStore(store: StartupSortStore , needAwaitCount: Int)= apply  {
+            this.mStartupSortStore = store
+            this.mNeedAwaitCount.set(needAwaitCount)
         }
 
         fun setConfig(config: StartupConfig?) = apply {
@@ -137,12 +157,22 @@ class StartupManager private constructor(
 
         fun build(context: Context): StartupManager {
             val realStartupList = mutableListOf<AndroidStartup<*>>()
-            mStartupList.forEach {
-                val process = it::class.java.getAnnotation(MultipleProcess::class.java)?.process ?: arrayOf()
-                if (process.isNullOrEmpty() || ProcessUtils.isMultipleProcess(context, process)) {
-                    realStartupList.add(it)
-                    if (it.waitOnMainThread() && !it.callCreateOnMainThread()) {
-                        mNeedAwaitCount.incrementAndGet()
+            if (mStartupSortStore != null) {
+                mStartupSortStore!!.result
+            } else {
+                mStartupList.forEach {
+                    val process =
+                        it::class.java.getAnnotation(MultipleProcess::class.java)?.process
+                            ?: arrayOf()
+                    if (process.isNullOrEmpty() || ProcessUtils.isMultipleProcess(
+                            context,
+                            process
+                        )
+                    ) {
+                        realStartupList.add(it)
+                        if (it.waitOnMainThread() && !it.callCreateOnMainThread()) {
+                            mNeedAwaitCount.incrementAndGet()
+                        }
                     }
                 }
             }
@@ -150,6 +180,7 @@ class StartupManager private constructor(
             return StartupManager(
                 context,
                 realStartupList,
+                mStartupSortStore,
                 mNeedAwaitCount,
                 mConfig ?: StartupConfig.Builder()
                     .setLoggerLevel(mLoggerLevel)

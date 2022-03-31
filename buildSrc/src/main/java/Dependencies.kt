@@ -13,7 +13,7 @@ object Versions {
     const val version_name = "1.0"
 
     const val gradle = "4.0.1"
-    const val kotlin = "1.3.72"
+    const val kotlin = "1.6.0"
     const val core_ktx = "1.3.1"
     const val appcompat = "1.1.0"
     const val junit = "4.12"
@@ -24,6 +24,7 @@ object Versions {
 
     const val gradle_bintray_plugin = "1.6"
     const val android_maven_gradle_plugin = "1.5"
+    const val auto_service = "1.0-rc2"
 }
 
 object Dependencies {
@@ -39,6 +40,7 @@ object Dependencies {
     const val gradle_bintray_plugin = "com.jfrog.bintray.gradle:gradle-bintray-plugin:${Versions.gradle_bintray_plugin}"
     const val android_maven_gradle_plugin = "com.github.dcendents:android-maven-gradle-plugin:${Versions.android_maven_gradle_plugin}"
     const val android_startup = "io.github.idisfkj:android-startup:${Versions.android_startup}"
+    const val auto_service =  "com.google.auto.service:auto-service:${Versions.auto_service}"
 
     val addRepos: (handler: RepositoryHandler) -> Unit = {
         it.google()

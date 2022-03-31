@@ -1,3 +1,6 @@
 include ':android-startup'
 include ':app'
 rootProject.name = "android-startup"
+include ':apt-annotation'
+include ':apt-processor'
+include ':lib-base'

@@ -4,19 +4,10 @@ import android.app.Application
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.rousetime.android_startup.StartupListener
-import com.rousetime.android_startup.StartupManager
 import com.rousetime.android_startup.manager.StartupCacheManager
 import com.rousetime.android_startup.model.CostTimesModel
-import com.rousetime.android_startup.model.LoggerLevel
-import com.rousetime.android_startup.model.StartupConfig
-import com.rousetime.sample.startup.SampleFirstStartup
 import com.rousetime.sample.startup.SampleFourthStartup
 import com.rousetime.sample.startup.SampleSecondStartup
-import com.rousetime.sample.startup.SampleThirdStartup
-import com.rousetime.sample.startup.multiple.SampleMultipleFirstStartup
-import com.rousetime.sample.startup.multiple.SampleMultipleSecondStartup
-import com.rousetime.sample.startup.multiple.SampleMultipleThirdStartup
 
 /**
  * Created by idisfkj on 2020/7/24.

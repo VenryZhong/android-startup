@@ -1,0 +1,22 @@
+plugins {
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm'
+    id 'kotlin-kapt'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+
+    implementation Dependencies.kotlin_stdlib
+    implementation Dependencies.auto_service
+    kapt  Dependencies.auto_service
+    implementation project(':apt-annotation')
+    implementation ("com.squareup:kotlinpoet:1.11.0")
+    implementation project(':apt-annotation')
+    implementation project(':lib-base')
+
+}

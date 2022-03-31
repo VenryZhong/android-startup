@@ -3,6 +3,7 @@ package com.rousetime.android_startup.sort
 import androidx.core.os.TraceCompat
 import com.rousetime.android_startup.Startup
 import com.rousetime.android_startup.execption.StartupException
+import com.venry.lib_base.extensions.getUniqueKey
 import com.rousetime.android_startup.extensions.getUniqueKey
 import com.rousetime.android_startup.model.StartupSortStore
 import com.rousetime.android_startup.utils.StartupLogUtils

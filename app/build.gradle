@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     signingConfigs {
@@ -30,11 +31,18 @@ android {
             signingConfig signingConfigs.release
         }
     }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation project(':android-startup')
+    implementation project(':apt-annotation')
+    kapt project(':apt-processor')
 
 //    implementation Dependencies.android_startup
 

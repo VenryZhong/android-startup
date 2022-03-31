@@ -8,9 +8,9 @@ import android.os.Process
  * Created by idisfkj on 2020/9/14.
  * Email: idisfkj@gmail.com.
  */
-internal object ProcessUtils {
+object ProcessUtils {
 
-    private fun getProcessName(context: Context): String {
+    fun getProcessName(context: Context): String {
         val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val myPid = Process.myPid()
         am.runningAppProcesses.forEach {

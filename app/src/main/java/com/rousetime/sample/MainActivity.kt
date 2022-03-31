@@ -50,6 +50,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, SampleMoreActivity::class.java))
         }
 
+        moreAnnotate.setOnClickListener {
+            startActivity(Intent(this, SampleMoreAnnotateActivity::class.java))
+        }
+
         SampleApplication.costTimesLiveData.observe(this, Observer {
             content.text = buildString {
                 append("Startup Completed: ")

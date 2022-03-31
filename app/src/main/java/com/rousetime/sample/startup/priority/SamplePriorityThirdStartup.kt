@@ -17,7 +17,7 @@ class SamplePriorityThirdStartup : AndroidStartup<String>() {
                 append("$it")
             }
         }
-        return SamplePriorityThirdStartup::class.java.simpleName
+        return SamplePriorityThirdAnnotateStartup::class.java.simpleName
     }
 
     override fun callCreateOnMainThread(): Boolean = false

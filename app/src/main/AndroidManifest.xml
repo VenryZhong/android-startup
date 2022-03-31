@@ -19,11 +19,17 @@
         </activity>
 
         <activity android:name=".SampleMoreActivity" />
+        <activity android:name=".SampleMoreAnnotateActivity" />
 
         <activity android:name=".SampleCommonActivity" />
+        <activity android:name=".SampleCommonAnnotateActivity" />
 
         <service
             android:name=".MultipleProcessService"
+            android:process=":multiple.process.service" />
+
+        <service
+            android:name=".MultipleProcessAnnotateService"
             android:process=":multiple.process.service" />
 
         <provider
